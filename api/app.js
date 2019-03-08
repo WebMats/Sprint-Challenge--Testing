@@ -3,7 +3,9 @@ const app = express();
 const gamesDB = require('../games/gamesModel');
 
 app.get('/', (req, res, next) => {
-    res.sendStatus(200)
+    gamesDB.getAll().then(games => {
+        res.status(200).json(games)
+    })
 })
 app.post('/', (req, res, next) => {
     const {title, genre} = req.body;
