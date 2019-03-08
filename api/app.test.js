@@ -2,9 +2,14 @@ const request = require('supertest');
 const app = require('./app');
 
 let id;
+let validID;
+let invalidID;
 test('should return a list and a status of 200', async () => {
     const result = await request(app).get('/');
     const {status, body: games} = result;
+    let lastId = games[games.length - 1].id;
+    validID = lastId;
+    invalidID = validID + 10;
     expect(status).toEqual(200);
     expect(Array.isArray(games)).not.toBeFalsy();
 })
@@ -45,13 +50,13 @@ test('should return 422 status due to missing genre', async () => {
     expect(body.errorMessage).toMatch(/Please provide both a title and a genre./);
 })
 test('should return game with corresponding id and status 200', async () => {
-    const result = await request(app).get('/1');
+    const result = await request(app).get(`/${validID}`);
     const {status, body} = result;
     expect(status).toEqual(200);
     expect(body).toBeDefined();
 })
 test('should return 404 when id does not exist', async () => {
-    const result = await request(app).get('/100');
+    const result = await request(app).get(`/${invalidID}`);
     const {status, body} = result;
     expect(status).toEqual(404);
     expect(body.errorMessage).toMatch(/game with that id does not exist./i)
