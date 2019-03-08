@@ -16,11 +16,21 @@ app.post('', (req, res, next) => {
         return res.status(422).json({errorMessage: "Please provide both a title and a genre."})
     }
     try {
-        res.sendStatus(200)
+        const {releaseYear} = req.body || 'tbd'
+        gamesDB.insert({title, genre, releaseYear}).then(result => {
+            res.status(201).json(result)
+        })
     } catch (err) {
         console.log(err)
         res.status(500).json({errorMessage: "Could not add game to database."})
     }
+})
+app.delete('/:id', (req, res, next) => {
+    gamesDB.remove(req.params.id).then(result => {
+        if(!result < 1) {
+            res.status(201).json({message: 'deleted'})
+        }
+    })
 })
 
 

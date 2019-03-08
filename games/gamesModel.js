@@ -11,8 +11,12 @@ const getAll = () => {
     return db('games')
 }
 
+const remove = (id) => {
+    return db('games').where({id}).delete();
+}
 
 module.exports = {
     insert,
-    getAll
+    getAll,
+    remove
 }
