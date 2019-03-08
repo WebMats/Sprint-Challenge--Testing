@@ -9,13 +9,18 @@ app.get('', (req, res, next) => {
         res.status(200).json(games)
     })
 })
+app.get('/:id', (req, res, next) => {
+    gamesDB.getOne({id: req.params.id}).then(result => {
+        res.status(200).json(result)
+    })
+})
 
 app.post('', async (req, res, next) => {
     const {title, genre} = req.body;
     if (!title || !genre) {
         return res.status(422).json({errorMessage: "Please provide both a title and a genre."})
     }
-    const gameFound = await gamesDB.getOne(title);
+    const gameFound = await gamesDB.getOne({title: title});
     if (gameFound) {
         return res.status(405).json({errorMessage: "Game with that title already exists."})
     }

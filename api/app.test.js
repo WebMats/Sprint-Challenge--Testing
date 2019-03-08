@@ -44,4 +44,9 @@ test('should return 422 status due to missing genre', async () => {
     expect(status).toEqual(422);
     expect(body.errorMessage).toMatch(/Please provide both a title and a genre./);
 })
-
+test('should return game with corresponding id and status 200', async () => {
+    const result = await request(app).get('/1');
+    const {status, body} = result;
+    expect(status).toEqual(200);
+    expect(body).toBeDefined();
+})

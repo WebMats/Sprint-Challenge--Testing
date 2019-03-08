@@ -10,8 +10,9 @@ const insert = async (game) => {
 const getAll = () => {
     return db('games')
 }
-const getOne = (title) => {
-    return db('games').where({title}).first();
+const getOne = (object) => {
+    const field = Object.keys(object)[0]
+    return db('games').where({[field]: object[field]}).first();
 }
 
 const remove = (id) => {
