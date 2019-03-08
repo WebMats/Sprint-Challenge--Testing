@@ -10,10 +10,14 @@ app.get('', (req, res, next) => {
     })
 })
 
-app.post('', (req, res, next) => {
+app.post('', async (req, res, next) => {
     const {title, genre} = req.body;
     if (!title || !genre) {
         return res.status(422).json({errorMessage: "Please provide both a title and a genre."})
+    }
+    const gameFound = await gamesDB.getOne(title);
+    if (gameFound) {
+        return res.status(405).json({errorMessage: "Game with that title already exists."})
     }
     try {
         const {releaseYear} = req.body || 'tbd'

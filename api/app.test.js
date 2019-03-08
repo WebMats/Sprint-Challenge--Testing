@@ -18,6 +18,12 @@ test('should return game added', async () => {
     expect(status).toEqual(201);
     expect(receivedObject).toMatchObject(newGame);
 })
+test('should return status 405 when adding game with same title', async () => {
+    const newGame = {title: 'Super Smash Bros. Ultimate', genre: 'Fighting'}
+    const result = await request(app).post('/').set('Content-Type', 'application/json').send(JSON.stringify(newGame))
+    expect(result.status).toEqual(405)
+    expect(result.body.errorMessage).toMatch(/Game with that title already exists./)
+})
 test('should delete the game with right id', async () => {
     const result = await request(app).delete(`/${id}`);
     expect(result.status).toEqual(201);

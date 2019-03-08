@@ -10,6 +10,9 @@ const insert = async (game) => {
 const getAll = () => {
     return db('games')
 }
+const getOne = (title) => {
+    return db('games').where({title}).first();
+}
 
 const remove = (id) => {
     return db('games').where({id}).delete();
@@ -18,5 +21,6 @@ const remove = (id) => {
 module.exports = {
     insert,
     getAll,
+    getOne,
     remove
 }
