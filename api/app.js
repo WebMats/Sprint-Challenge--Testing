@@ -11,6 +11,9 @@ app.get('', (req, res, next) => {
 })
 app.get('/:id', (req, res, next) => {
     gamesDB.getOne({id: req.params.id}).then(result => {
+        if (!result) {
+            res.status(404).json({errorMessage: "Game with that id does not exist."})
+        }
         res.status(200).json(result)
     })
 })

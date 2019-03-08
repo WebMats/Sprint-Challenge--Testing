@@ -50,3 +50,9 @@ test('should return game with corresponding id and status 200', async () => {
     expect(status).toEqual(200);
     expect(body).toBeDefined();
 })
+test('should return 404 when id does not exist', async () => {
+    const result = await request(app).get('/100');
+    const {status, body} = result;
+    expect(status).toEqual(404);
+    expect(body.errorMessage).toMatch(/game with that id does not exist./i)
+})
